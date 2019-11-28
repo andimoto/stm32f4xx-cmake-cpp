@@ -1,4 +1,4 @@
-set(sources
+set(sources ${sources}
     src/misc.c
     src/stm32f4xx_adc.c
     src/stm32f4xx_can.c
@@ -41,6 +41,35 @@ set(sources
     src/stm32f4xx_wwdg.c
     pure_virtual.c            # this is needed for CPP size optimization
 )
+
+#set system init functions to source
+set(sources ${sources} 
+	../startup_files/system_stm32f4xx.c)
+
+if (DEVICE_FAMILY STREQUAL STM32F40XX) 
+	set(sources ${sources} ../startup_files/startup_stm32f40xx.s)
+elseif (DEVICE_FAMILY STREQUAL STM32F401X) 
+	set(sources ${sources} ../startup_files/startup_stm32f401xx.s)
+elseif (DEVICE_FAMILY STREQUAL STM32F40_41xxx) 
+	set(sources ${sources} ../startup_files/startup_stm32f40_41xxx.s)
+elseif (DEVICE_FAMILY STREQUAL STM32F410xx) 
+	set(sources ${sources} ../startup_files/startup_stm32f410xx.s)
+elseif (DEVICE_FAMILY STREQUAL STM32F411xE) 
+	set(sources ${sources} ../startup_files/startup_stm32f411xe.s)
+elseif (DEVICE_FAMILY STREQUAL STM32F412xG ) 
+	set(sources ${sources} ../startup_files/startup_stm32f412xg.s)
+elseif (DEVICE_FAMILY STREQUAL STM32F413_423xx) 
+	set(sources ${sources} ../startup_files/startup_stm32f413_423xx.s)
+elseif (DEVICE_FAMILY STREQUAL STM32F427_437xx) 
+	set(sources ${sources} ../startup_files/startup_stm32f427_437xx.s)
+elseif (DEVICE_FAMILY STREQUAL STM32F429_439xx) 
+	set(sources ${sources} ../startup_files/startup_stm32f429_439xx.s)
+elseif (DEVICE_FAMILY STREQUAL STM32F446xx) 
+	set(sources ${sources} ../startup_files/startup_stm32f446xx.s)
+elseif (DEVICE_FAMILY STREQUAL STM32F469_479xx) 
+	set(sources ${sources} ../startup_files/startup_stm32f469_479xx.s)
+endif()
+
 
 # FMC/FSMC only defined for some F4 families
 if (DEVICE_FAMILY STREQUAL STM32F427_437xx OR DEVICE_FAMILY STREQUAL STM32F429_439xx OR DEVICE_FAMILY STREQUAL STM32F446xx OR DEVICE_FAMILY STREQUAL STM32F469_479xx)

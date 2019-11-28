@@ -1,9 +1,10 @@
 #include "stm32f4xx.h"
+#include "itm-write.h"
 
 int main()
 {
 	int a = 0;
-
+	int b = 0;
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE);
 
 	GPIO_InitTypeDef gpio_out = {
@@ -23,11 +24,10 @@ int main()
 		a++;
 
 
-		if(a==500000)
+		if(a==200000)
 		{
 			a = 0;
-			ITM_SendChar( 65 );   //  Send ASCII code 65 = ’A’
-//			printf("Hallo\n");
+			printf("Hallo %d\n", b++);
 //			GPIO_ToggleBits(GPIOD, GPIO_Pin_2);
 		}
 	};

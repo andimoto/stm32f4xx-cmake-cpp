@@ -87,6 +87,7 @@ add_library(stm32f4xx ${sources})
 # add include directories for StdPeriph library and CMSIS
 target_include_directories(stm32f4xx PUBLIC inc)
 target_include_directories(stm32f4xx PUBLIC inc/cmsis)
+target_include_directories(stm32f4xx PUBLIC ../tools)
 
 # set up some defines for the StdPeriph library
 target_compile_definitions(stm32f4xx PUBLIC USE_STDPERIPH_DRIVER)

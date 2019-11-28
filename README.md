@@ -1,4 +1,4 @@
-# STM32F407 CMake Template 
+# STM32F4xx CMake Cpp Template 
 ...for Linux Toolchain (on Linux Mint 19.1)
 
 ## This Project contains following:
@@ -18,7 +18,7 @@
 ## Build
 ```
 - make a new directory in the projects directory: `mkdir build` and change into it
-- run: `cmake ..`
+- configure debug build: `cmake -DCMAKE_BUILD_TYPE=Debug ..`
 - then run: `make` (or `make --trace` for verbose output) 
 ```
 

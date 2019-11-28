@@ -35,9 +35,6 @@ target_link_libraries(${elf_file} PUBLIC "-g -Wl,--gc-sections")
 # link with linker file
 target_link_libraries(${elf_file} PUBLIC -T${LINKER_SCRIPT})
 
-# show size of resulting firmware image
-add_custom_target(${elf_file}-size DEPENDS ${elf_file} COMMAND ${ARM_SIZE_EXECUTABLE} -B ${elf_file})
-
 # generate extended listing
 add_custom_target(${lss_file} DEPENDS ${elf_file} COMMAND ${ARM_OBJDUMP_EXECUTABLE} -S ${elf_file} > ${lss_file})
 
@@ -46,7 +43,10 @@ add_custom_target(${hex_file} DEPENDS ${elf_file} COMMAND ${ARM_OBJCOPY_EXECUTAB
 add_custom_target(${bin_file} DEPENDS ${elf_file} COMMAND ${ARM_OBJCOPY_EXECUTABLE} -Obinary ${elf_file} ${bin_file})
 add_custom_target(${application_name} ALL DEPENDS ${elf_file}-size ${bin_file} ${hex_file} ${lss_file})
 
+# show size of resulting firmware image
+add_custom_target(${elf_file}-size DEPENDS ${elf_file} COMMAND ${ARM_SIZE_EXECUTABLE} -B ${elf_file})
+
 # OpenOCD targets
-add_custom_target(flash DEPENDS ${elf_file} COMMAND ${OPENOCD_EXECUTABLE}
-  -f ${OPENOCD_CONFIG}
-  --command "program ${elf_file} reset exit")
+#add_custom_target(flash DEPENDS ${elf_file} COMMAND ${OPENOCD_EXECUTABLE}
+#  -f ${OPENOCD_CONFIG}
+#  --command "program ${elf_file} reset exit")

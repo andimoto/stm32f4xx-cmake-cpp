@@ -2,7 +2,7 @@ cmake_minimum_required (VERSION 2.8.12)
 
 # set the build type
 if(NOT CMAKE_BUILD_TYPE) 
-    set(CMAKE_BUILD_TYPE Release)
+    set(CMAKE_BUILD_TYPE Debug)
 endif(NOT CMAKE_BUILD_TYPE)
 
 if(CMAKE_BUILD_TYPE MATCHES Debug)
@@ -18,7 +18,7 @@ include(CMake/GNU-ARM-Toolchain.cmake)
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake/Modules)
 
 # include OpenOCD module, but make it not required
-find_package(Openocd)
+#find_package(Openocd)
 
 # Project specific settings
 set(application_name "STM32F4Template")
@@ -33,6 +33,7 @@ set(HSE_VALUE 8000000)
 
 # Used linker file (just for testing)
 get_filename_component(LINKER_SCRIPT linker/stm32f407vgt.ld ABSOLUTE)
+#get_filename_component(LINKER_SCRIPT linker/stm32_flash.ld ABSOLUTE)
 
 # Use LTO? WARNING: This might break the code
 #set(ADDITIONAL_CORE_FLAGS -flto)

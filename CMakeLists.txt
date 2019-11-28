@@ -38,10 +38,10 @@ get_filename_component(LINKER_SCRIPT linker/stm32f407vgt.ld ABSOLUTE)
 #set(ADDITIONAL_CORE_FLAGS -flto)
 
 # OpenOCD config file
-get_filename_component(OPENOCD_CONFIG tools/stm32f4discovery.cfg ABSOLUTE)
+#get_filename_component(OPENOCD_CONFIG tools/stm32f4discovery.cfg ABSOLUTE)
 
 # add libraries
-add_subdirectory(lib)
+add_subdirectory(stm32lib)
 
 # add main project
 add_subdirectory(src)

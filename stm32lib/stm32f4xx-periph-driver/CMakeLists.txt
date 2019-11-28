@@ -42,6 +42,10 @@ set(sources ${sources}
     pure_virtual.c            # this is needed for CPP size optimization
 )
 
+#set debug functions to source
+set(sources ${sources} 
+	../tools/itm_write.c)
+
 #set system init functions to source
 set(sources ${sources} 
 	../startup/system_stm32f4xx.c)

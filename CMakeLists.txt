@@ -30,8 +30,8 @@ set(DEVICE_FAMILY STM32F40_41xxx)
 set(HSE_VALUE 8000000)
 
 # Used linker file (just for testing)
-#get_filename_component(LINKER_SCRIPT linker/stm32f407vgt.ld ABSOLUTE)
-get_filename_component(LINKER_SCRIPT linker/stm32_flash.ld ABSOLUTE)
+#get_filename_component(LINKER_SCRIPT linker-scripts/stm32f407vgt.ld ABSOLUTE)
+get_filename_component(LINKER_SCRIPT linker-scripts/stm32_flash.ld ABSOLUTE)
 
 # Use LTO? WARNING: This might break the code
 #set(ADDITIONAL_CORE_FLAGS -flto)

@@ -1,5 +1,6 @@
 #include "itm_write.h"
 #include "stm32f4xx.h"
+#include "stm32f4xx_rng.h"
 
 int main()
 {
@@ -18,7 +19,7 @@ int main()
 //	GPIO_Init(GPIOD, &gpio_out);
 //	GPIO_WriteBit(GPIOD, GPIO_Pin_2, Bit_SET);
 
-	RCC_AHB1PeriphClockCmd(RCC_AHB2Periph_RNG, ENABLE);
+	RCC_AHB2PeriphClockCmd(RCC_AHB2Periph_RNG, ENABLE);
 	RNG_Cmd(ENABLE);
 
 
@@ -29,7 +30,9 @@ int main()
 		if(a==200000)
 		{
 			a = 0;
+
 			printf("Hallo %u\n", (unsigned int)RNG_GetRandomNumber());
+//			printf("Hallo\n");
 //			GPIO_ToggleBits(GPIOD, GPIO_Pin_2);
 		}
 	};

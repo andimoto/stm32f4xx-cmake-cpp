@@ -1,7 +1,17 @@
 # add the sources here
+set(HAL_UC_DIR hal_uc)
+
 set(sources
     main.cpp
 )
+
+set(sources ${sources}
+    ${HAL_UC_DIR}/rng.cpp
+)
+
+target_include_directories(stm32f4xx PUBLIC inc)
+target_include_directories(stm32f4xx PUBLIC ${HAL_UC_DIR}/inc)
+
 
 # GCC optimization level: use -O0 in debug build, otherwise -O2
 if(CMAKE_BUILD_TYPE MATCHES Debug)

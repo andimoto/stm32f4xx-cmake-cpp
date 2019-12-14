@@ -3,6 +3,7 @@ set(HAL_UC_DIR hal_uc)
 
 set(sources
     main.cpp
+    func.cpp
 )
 
 set(sources ${sources}
@@ -34,7 +35,7 @@ add_executable(${elf_file} ${sources})
 target_link_libraries(${elf_file} PUBLIC stm32f4xx)
 
 # set additional for compiler and linker: optimization and generate map file
-set(additional_compiler_flags ${opt_level})
+set(additional_compiler_flags ${opt_level}) 
 set(additional_linker_flags -Wl,-Map=${map_file},--cref,--no-warn-mismatch)
 target_compile_options(${elf_file} PRIVATE ${additional_compiler_flags})
 target_link_libraries(${elf_file} PRIVATE ${additional_linker_flags})

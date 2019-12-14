@@ -47,15 +47,20 @@ set(sources ${sources}
 	../tools/itm_write.c)
 
 #set system init functions to source
+#set(sources ${sources} 
+#	../startup/system_stm32f4xx.c)
 set(sources ${sources} 
-	../startup/system_stm32f4xx.c)
+	../startup/system_ARMCM4.c
+	../startup/startup_ARMCM4.c)
+
 
 if (DEVICE_FAMILY STREQUAL STM32F40XX) 
 	set(sources ${sources} ../startup/startup_stm32f40xx.s)
 elseif (DEVICE_FAMILY STREQUAL STM32F401X) 
 	set(sources ${sources} ../startup/startup_stm32f401xx.s)
 elseif (DEVICE_FAMILY STREQUAL STM32F40_41xxx) 
-	set(sources ${sources} ../startup/startup_stm32f40_41xxx.s)
+#	set(sources ${sources} ../startup/startup_stm32f40_41xxx.s)
+	set(sources ${sources} ../startup/startup_ARMCM4.S)
 elseif (DEVICE_FAMILY STREQUAL STM32F410xx) 
 	set(sources ${sources} ../startup/startup_stm32f410xx.s)
 elseif (DEVICE_FAMILY STREQUAL STM32F411xE) 
@@ -88,11 +93,14 @@ add_library(stm32f4xx ${sources})
 target_include_directories(stm32f4xx PUBLIC inc)
 target_include_directories(stm32f4xx PUBLIC inc/cmsis)
 target_include_directories(stm32f4xx PUBLIC ../tools)
+target_include_directories(stm32f4xx PUBLIC ../startup)
 
 # set up some defines for the StdPeriph library
 target_compile_definitions(stm32f4xx PUBLIC USE_STDPERIPH_DRIVER)
 target_compile_definitions(stm32f4xx PUBLIC ${DEVICE_FAMILY})
 target_compile_definitions(stm32f4xx PUBLIC HSE_VALUE=${HSE_VALUE})
+target_compile_definitions(stm32f4xx PUBLIC ARMCM4)
+
 
 # additional compiler options: use size-optimized version of library in release build, use -O0 in debug build
 if(CMAKE_BUILD_TYPE MATCHES Debug)

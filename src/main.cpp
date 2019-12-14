@@ -1,6 +1,8 @@
 #include "itm_write.h"
 #include "rng.hpp"
 
+extern void ramFunc(std::uint32_t num);
+
 int main()
 {
 	unsigned int a = 0;
@@ -8,7 +10,6 @@ int main()
 	bool error = true;
 
 	hal_uc::rng rand1;
-
 
 	rand1.start();
 
@@ -22,7 +23,8 @@ int main()
 			error = rand1.getNumber(randomNumber);
 			if(error != true)
 			{
-				printf("Hallo %X\n", randomNumber);
+				ramFunc(randomNumber);;
+//				printf("Hallo %X\n", randomNumber);
 			}
 		}
 	};

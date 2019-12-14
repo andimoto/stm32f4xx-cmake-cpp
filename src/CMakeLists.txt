@@ -3,6 +3,7 @@ set(HAL_UC_DIR hal_uc)
 
 set(sources
     main.cpp
+    func.cpp
 )
 
 set(sources ${sources}

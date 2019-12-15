@@ -15,7 +15,7 @@
 **
 **  Environment : Atollic TrueSTUDIO(R)
 **
-**  Distribution: The file is distributed “as is,” without any warranty
+**  Distribution: The file is distributed ï¿½as is,ï¿½ without any warranty
 **                of any kind.
 **
 **  (c)Copyright Atollic AB.
@@ -40,10 +40,13 @@ _Min_Heap_Size = 0;      /* required amount of heap  */
 _Min_Stack_Size = 0x400; /* required amount of stack */
 
 /* Specify the memory areas */
+/* STM32F407VE > 512K Flash, 112K SRAM1, 16K SRAM2
+   STM32F407VG > 1024K Flash, 112K SRAM1, 16K SRAM2 */
 MEMORY
 {
-  FLASH (rx)      : ORIGIN = 0x08000000, LENGTH = 1024K
-  RAM (xrw)       : ORIGIN = 0x20000000, LENGTH = 192K
+  FLASH (rx)      : ORIGIN = 0x08000000, LENGTH = 512K
+  SRAM1 (xrw)     : ORIGIN = 0x20000000, LENGTH = 112K
+  SRAM2 (xrw)	  : ORIGIN = 0x2001C000, LENGTH = 16K
   MEMORY_B1 (rx)  : ORIGIN = 0x60000000, LENGTH = 0K
 }
 
@@ -110,7 +113,7 @@ SECTIONS
   /* used by the startup to initialize data */
   _sidata = .;
 
-  /* Initialized data sections goes into RAM, load LMA copy after code */
+  /* Initialized data sections goes into SRAM1, load LMA copy after code */
   .data : AT ( _sidata )
   {
     . = ALIGN(4);
@@ -120,7 +123,7 @@ SECTIONS
 
     . = ALIGN(4);
     _edata = .;        /* define a global symbol at data end */
-  } >RAM
+  } >SRAM1
 
   /* Uninitialized data section */
   . = ALIGN(4);
@@ -136,9 +139,9 @@ SECTIONS
     . = ALIGN(4);
     _ebss = .;         /* define a global symbol at bss end */
     __bss_end__ = _ebss;
-  } >RAM
+  } >SRAM1
 
-  /* User_heap_stack section, used to check that there is enough RAM left */
+  /* User_heap_stack section, used to check that there is enough SRAM1 left */
   ._user_heap_stack :
   {
     . = ALIGN(4);
@@ -147,7 +150,12 @@ SECTIONS
     . = . + _Min_Heap_Size;
     . = . + _Min_Stack_Size;
     . = ALIGN(4);
-  } >RAM
+  } >SRAM1
+
+  .ramfunc :
+  {
+    *(.RAM_FUNC*);
+  } > SRAM2
 
   /* MEMORY_bank1 section, code must be located here explicitly            */
   /* Example: extern int foo(void) __attribute__ ((section (".mb1text"))); */

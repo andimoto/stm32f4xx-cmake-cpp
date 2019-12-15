@@ -1,8 +1,23 @@
 #include "itm_write.h"
 #include "rng.hpp"
+#include "timer.hpp"
+#include <cstdint>
+#include <stdint.h>
+
+
 
 extern std::uint32_t ramFunc(std::uint32_t numA, std::uint32_t numB);
-//extern std::uint32_t ramFuncCCM(std::uint32_t numA, std::uint32_t numB);
+extern std::uint32_t ramFuncCCM(std::uint32_t numA, std::uint32_t numB);
+
+static hal_uc::timer::timConfig timConf(
+		hal_uc::timer::Instance::TIMER2,
+		0,
+		hal_uc::timer::CounterMode::UP,
+		UINT32_MAX,
+		hal_uc::timer::ClockDiv::DIV1,
+		0,
+		false
+		);
 
 int main()
 {
@@ -12,10 +27,16 @@ int main()
 	std::uint32_t randomNumberB = 0;
 	bool error = true;
 
-	hal_uc::rng rand1;
+	std::uint32_t timA = 0;
+	std::uint32_t timB = 0;
+	std::uint32_t timC = 0;
+	std::uint32_t timD = 0;
 
+	hal_uc::rng rand1;
+	hal_uc::timer tim2(timConf);
 
 	rand1.start();
+	tim2.start();
 
 	for (;;)
 	{
@@ -30,11 +51,15 @@ int main()
 
 			if(error != true)
 			{
+				timA = tim2.get();
 				randomNumber = ramFunc(randomNumberA, randomNumberB);
-				printf("A %X\n", randomNumber);
+				timB = tim2.get();
+				printf("A %X in %u ticks\n", randomNumber, (timB-timA));
 
-//				randomNumber = ramFuncCCM(randomNumberA, randomNumberB);
-//				printf("B %X\n", randomNumber);
+				timC = tim2.get();
+				randomNumber = ramFuncCCM(randomNumberA, randomNumberB);
+				timD = tim2.get();
+				printf("B %X in %u ticks\n", randomNumber, (timD-timC));
 			}
 		}
 	};

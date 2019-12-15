@@ -8,6 +8,7 @@ set(sources
 
 set(sources ${sources}
     ${HAL_UC_DIR}/rng.cpp
+    ${HAL_UC_DIR}/timer.cpp
 )
 
 target_include_directories(stm32f4xx PUBLIC inc)

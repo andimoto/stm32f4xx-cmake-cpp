@@ -6,6 +6,7 @@
 #include "timer.hpp"
 #include "stm32f4xx.h"
 #include "stm32f4xx_tim.h"
+#include "core_cm4.h"
 
 
 static TIM_TypeDef* timers[static_cast<std::uint8_t>(hal_uc::timer::Instance::ALL)] = {
@@ -14,6 +15,10 @@ static TIM_TypeDef* timers[static_cast<std::uint8_t>(hal_uc::timer::Instance::AL
 
 static std::uint32_t rccTimers[static_cast<std::uint8_t>(hal_uc::timer::Instance::ALL)] = {
 		RCC_APB1Periph_TIM2
+};
+
+static IRQn_Type nvicIrqMap[static_cast<std::uint8_t>(hal_uc::timer::Instance::ALL)] = {
+		TIM2_IRQn
 };
 
 static void startTimerCtrl(const hal_uc::timer::Instance tim)
@@ -29,11 +34,13 @@ static void stopTimerCtrl(const hal_uc::timer::Instance tim)
 static void enableTimerIrq(const hal_uc::timer::Instance tim)
 {
 	timers[static_cast<std::uint8_t>(tim)]->DIER |= static_cast<std::uint16_t>(TIM_IT_Update);
+	NVIC_EnableIRQ(nvicIrqMap[static_cast<std::uint8_t>(tim)]);
 }
 
 static void disableTimerIrq(const hal_uc::timer::Instance tim)
 {
 	timers[static_cast<std::uint8_t>(tim)]->DIER = static_cast<std::uint16_t>(~TIM_IT_Update);
+	NVIC_DisableIRQ(nvicIrqMap[static_cast<std::uint8_t>(tim)]);
 }
 
 
@@ -60,8 +67,8 @@ hal_uc::timer::timer(const timConfig timerConf) :
 	TimerBaseInit.TIM_ClockDivision = static_cast<std::uint16_t>(timerConf.clockDiv);
 	TimerBaseInit.TIM_RepetitionCounter = static_cast<std::uint16_t>(timerConf.repetitionCnt);
 
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
-	TIM_TimeBaseInit(timers[static_cast<std::uint8_t>(timerConf.timInstance)], &TimerBaseInit);
+	RCC_APB1PeriphClockCmd(rccTimers[static_cast<std::uint8_t>(timInstance)], ENABLE);
+	TIM_TimeBaseInit(timers[static_cast<std::uint8_t>(timInstance)], &TimerBaseInit);
 }
 
 std::uint32_t hal_uc::timer::get(void) const

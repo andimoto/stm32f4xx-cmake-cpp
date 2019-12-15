@@ -3,21 +3,28 @@
 #include "timer.hpp"
 #include <cstdint>
 #include <stdint.h>
-
-
+#include "stm32f4xx.h"
+#include "core_cm4.h"
 
 extern std::uint32_t ramFunc(std::uint32_t numA, std::uint32_t numB);
 extern std::uint32_t ramFuncCCM(std::uint32_t numA, std::uint32_t numB);
 
 static hal_uc::timer::timConfig timConf(
 		hal_uc::timer::Instance::TIMER2,
-		0,
+		83,
 		hal_uc::timer::CounterMode::UP,
-		UINT32_MAX,
-		hal_uc::timer::ClockDiv::DIV1,
+		1000,
+		hal_uc::timer::ClockDiv::DIV2,
 		0,
-		false
+		true
 		);
+
+void TIM2_IRQHandler(void)
+{
+	NVIC_SetPendingIRQ(TIM2_IRQn);
+	printf("*");
+}
+
 
 int main()
 {

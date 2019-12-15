@@ -47,6 +47,7 @@ MEMORY
   FLASH (rx)      : ORIGIN = 0x08000000, LENGTH = 512K
   SRAM1 (xrw)     : ORIGIN = 0x20000000, LENGTH = 112K
   SRAM2 (xrw)	  : ORIGIN = 0x2001C000, LENGTH = 16K
+  CCM	(xrw)	  : ORIGIN = 0x10000000, LENGTH = 64K
   MEMORY_B1 (rx)  : ORIGIN = 0x60000000, LENGTH = 0K
 }
 
@@ -154,8 +155,17 @@ SECTIONS
 
   .ramfunc :
   {
-    *(.RAM_FUNC*);
+    _ssram2 = .;
+    *(.SRAM2F*);
+    _esram2 = .;
   } > SRAM2
+
+  .core_coupled_memory :
+  {
+  	_sccm = .;
+    *(.CCMEM*);
+    _eccm = .;
+  } > CCM
 
   /* MEMORY_bank1 section, code must be located here explicitly            */
   /* Example: extern int foo(void) __attribute__ ((section (".mb1text"))); */

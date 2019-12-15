@@ -99,6 +99,23 @@ LoopFillZerobss:
   cmp  r2, r3
   bcc  FillZerobss
 
+/* Copy the ccm segment initializers from flash to SRAM */
+  movs	r1, #0
+  b	LoopCopyCcmInit
+
+CopyCcmInit:
+	ldr	r3, =_sccm
+	ldr	r3, [r3, r1]
+	str	r3, [r0, r1]
+	adds	r1, r1, #4
+
+LoopCopyCcmInit:
+	ldr	r0, =_sccm
+	ldr	r3, =_eccm
+	adds	r2, r0, r1
+	cmp	r2, r3
+	bcc	CopyCcmInit
+
 /* Call the clock system intitialization function.*/
   bl  SystemInit   
 /* Call static constructors */

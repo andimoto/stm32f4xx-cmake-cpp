@@ -45,30 +45,32 @@ static void disableTimerIrq(const hal_uc::timer::Instance tim)
 
 
 hal_uc::timer::timConfig::timConfig(const Instance instConf, const std::uint16_t prescalerConf, const CounterMode counterModeConf,
-				const std::uint32_t periodConf, const ClockDiv clockDivConf, const std::uint8_t repetitionConf,
-				const bool irqOnConf) :
+				const std::uint32_t periodConf, const ClockDiv clockDivConf, const std::uint8_t repetitionConf) :
 		timInstance(instConf), prescaler(prescalerConf), counterMode(counterModeConf),
-		period(periodConf), clockDiv(clockDivConf), repetitionCnt(repetitionConf), irqOn(irqOnConf)
+		period(periodConf), clockDiv(clockDivConf), repetitionCnt(repetitionConf)
 {
 
 }
 
-
-
-hal_uc::timer::timer(const timConfig timerConf) :
-		timInstance(timerConf.timInstance),
-		useIrq(timerConf.irqOn)
+static void initTimer(const hal_uc::timer::timConfig& timerConfigInit)
 {
 	TIM_TimeBaseInitTypeDef TimerBaseInit ;
 
-	TimerBaseInit.TIM_Prescaler = static_cast<std::uint16_t>(timerConf.prescaler);
-	TimerBaseInit.TIM_CounterMode = static_cast<std::uint16_t>(timerConf.counterMode);
-	TimerBaseInit.TIM_Period = static_cast<std::uint32_t>(timerConf.period);
-	TimerBaseInit.TIM_ClockDivision = static_cast<std::uint16_t>(timerConf.clockDiv);
-	TimerBaseInit.TIM_RepetitionCounter = static_cast<std::uint16_t>(timerConf.repetitionCnt);
+	TimerBaseInit.TIM_Prescaler = static_cast<std::uint16_t>(timerConfigInit.prescaler);
+	TimerBaseInit.TIM_CounterMode = static_cast<std::uint16_t>(timerConfigInit.counterMode);
+	TimerBaseInit.TIM_Period = static_cast<std::uint32_t>(timerConfigInit.period);
+	TimerBaseInit.TIM_ClockDivision = static_cast<std::uint16_t>(timerConfigInit.clockDiv);
+	TimerBaseInit.TIM_RepetitionCounter = static_cast<std::uint16_t>(timerConfigInit.repetitionCnt);
 
-	RCC_APB1PeriphClockCmd(rccTimers[static_cast<std::uint8_t>(timInstance)], ENABLE);
-	TIM_TimeBaseInit(timers[static_cast<std::uint8_t>(timInstance)], &TimerBaseInit);
+	RCC_APB1PeriphClockCmd(rccTimers[static_cast<std::uint8_t>(timerConfigInit.timInstance)], ENABLE);
+	TIM_TimeBaseInit(timers[static_cast<std::uint8_t>(timerConfigInit.timInstance)], &TimerBaseInit);
+}
+
+hal_uc::timer::timer(const timConfig timerConf, simplePointer timerIrqFuncConfig) :
+		timInstance(timerConf.timInstance),
+		timerIrqFunc(timerIrqFuncConfig)
+{
+	initTimer(timerConf);
 }
 
 std::uint32_t hal_uc::timer::get(void) const
@@ -78,23 +80,21 @@ std::uint32_t hal_uc::timer::get(void) const
 
 void hal_uc::timer::start(void)
 {
-	if(useIrq)
-	{
-		enableTimerIrq(timInstance);
-	}
-	startTimerCtrl(timInstance);
+	enableTimerIrq(timInstance); /* enable NVIC Irq */
+	startTimerCtrl(timInstance); /* start timer */
 }
 
 void hal_uc::timer::stop(void)
 {
-	if(useIrq)
-	{
-		disableTimerIrq(timInstance);
-	}
-	stopTimerCtrl(timInstance);
+	disableTimerIrq(timInstance); /* disable NVIC Irq */
+	stopTimerCtrl(timInstance); /* stop timer */
 }
 
 void hal_uc::timer::irqHandler(void)
 {
-
+	/* call given irq function if not nullptr */
+	if(timerIrqFunc != nullptr)
+	{
+		timerIrqFunc();
+	}
 }

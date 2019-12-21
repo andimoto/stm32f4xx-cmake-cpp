@@ -1,11 +1,12 @@
+#include <cstdint>
+#include <stdint.h>
+
 #include "itm_write.h"
 #include "rng.hpp"
 #include "timer.hpp"
-#include <cstdint>
-#include <stdint.h>
 #include "stm32f4xx.h"
 #include "core_cm4.h"
-
+#include "types.hpp"
 
 
 extern std::uint32_t ramFunc(std::uint32_t numA, std::uint32_t numB);
@@ -18,8 +19,7 @@ static hal_uc::timer::timConfig timConf(
 		hal_uc::timer::CounterMode::UP,
 		999,
 		hal_uc::timer::ClockDiv::DIV1,
-		0,
-		true
+		0
 		);
 
 static std::uint32_t timerValue = 0;
@@ -60,10 +60,15 @@ void printRandom(void)
 }
 }
 
+static void cnt(void)
+{
+	timerValue++;
+}
+
 int main()
 {
 	hal_uc::rng rand1;
-	hal_uc::timer tim2(timConf);
+	hal_uc::timer tim2(timConf, &cnt);
 
 	refTim = &tim2;
 	refRng = &rand1;
@@ -86,8 +91,8 @@ int main()
 }
 
 
-extern "C" void TIM2_IRQHandler(void)
+extern "C" __attribute__((section(".SRAM2F"))) void TIM2_IRQHandler(void)
 {
 	TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
-	timerValue++;
+	refTim->irqHandler();
 }

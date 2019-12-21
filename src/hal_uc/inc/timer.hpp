@@ -6,6 +6,7 @@
 #define HAL_UC_TIMER_H_
 
 #include <cstdint>
+#include "types.hpp"
 
 namespace hal_uc
 {
@@ -40,11 +41,9 @@ public:
 		const std::uint32_t period;
 		const ClockDiv clockDiv;
 		const std::uint8_t repetitionCnt;
-		bool irqOn;
 
 		timConfig(const Instance instConf, const std::uint16_t prescalerConf, const CounterMode counterModeConf,
-				const std::uint32_t periodConf, const ClockDiv clockDivConf, const std::uint8_t repetitionConf,
-				const bool irqOnConf);
+				const std::uint32_t periodConf, const ClockDiv clockDivConf, const std::uint8_t repetitionConf);
 	};
 
 	void start(void);
@@ -55,12 +54,13 @@ public:
 
 	void irqHandler(void);
 
-	timer(const timConfig timerConf);
+	timer(const timConfig timerConf, const simplePointer timerIrqFuncConfig = nullptr);
 
 private:
 	const Instance timInstance;
-	const bool useIrq;
-	std::uint32_t value;
+	const simplePointer timerIrqFunc;
+
+
 };
 
 }

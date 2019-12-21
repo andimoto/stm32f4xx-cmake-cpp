@@ -10,15 +10,46 @@
 
 
 static TIM_TypeDef* timers[static_cast<std::uint8_t>(hal_uc::timer::Instance::ALL)] = {
-		 TIM2
+		TIM2,
+		TIM3,
+		TIM4,
+		TIM5,
+		TIM6,
+		TIM7,
+		TIM9,
+		TIM10,
+		TIM11,
+		TIM12,
+		TIM13,
+		TIM14
 };
 
 static std::uint32_t rccTimers[static_cast<std::uint8_t>(hal_uc::timer::Instance::ALL)] = {
-		RCC_APB1Periph_TIM2
+		RCC_APB1Periph_TIM2,
+		RCC_APB1Periph_TIM3,
+		RCC_APB1Periph_TIM4,
+		RCC_APB1Periph_TIM5,
+		RCC_APB1Periph_TIM6,
+		RCC_APB1Periph_TIM7,
+		RCC_APB2Periph_TIM9,
+		RCC_APB2Periph_TIM10,
+		RCC_APB2Periph_TIM11,
+		RCC_APB1Periph_TIM13,
+		RCC_APB1Periph_TIM14
 };
 
 static IRQn_Type nvicIrqMap[static_cast<std::uint8_t>(hal_uc::timer::Instance::ALL)] = {
-		TIM2_IRQn
+		TIM2_IRQn,
+		TIM3_IRQn,
+		TIM4_IRQn,
+		TIM5_IRQn,
+		TIM6_DAC_IRQn,
+		TIM7_IRQn,
+		TIM1_BRK_TIM9_IRQn,
+		TIM1_UP_TIM10_IRQn,
+		TIM1_TRG_COM_TIM11_IRQn,
+		TIM8_BRK_TIM12_IRQn,
+		TIM8_UP_TIM13_IRQn
 };
 
 static void startTimerCtrl(const hal_uc::timer::Instance tim)

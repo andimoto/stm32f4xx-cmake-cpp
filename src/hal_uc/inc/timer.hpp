@@ -17,6 +17,17 @@ public:
 	enum class Instance
 	{
 		TIMER2,
+		TIMER3,
+		TIMER4,
+		TIMER5,
+		TIMER6,
+		TIMER7,
+		TIMER9,
+		TIMER10,
+		TIMER11,
+		TIMER12,
+		TIMER13,
+		TIMER14,
 		ALL
 	};
 

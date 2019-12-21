@@ -14,7 +14,7 @@ extern std::uint32_t ramFuncCCM(std::uint32_t numA, std::uint32_t numB);
 
 /* configure timer for about 1ms @APB1 Clock of 168Mhz / 4 (AHB Div) */
 static hal_uc::timer::timConfig timConf(
-		hal_uc::timer::Instance::TIMER2,
+		hal_uc::timer::Instance::TIMER3,
 		42-1,
 		hal_uc::timer::CounterMode::UP,
 		999,
@@ -94,5 +94,11 @@ int main()
 extern "C" __attribute__((section(".SRAM2F"))) void TIM2_IRQHandler(void)
 {
 	TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
+//	refTim->irqHandler();
+}
+
+extern "C" __attribute__((section(".SRAM2F"))) void TIM3_IRQHandler(void)
+{
+	TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
 	refTim->irqHandler();
 }

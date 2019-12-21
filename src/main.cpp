@@ -22,7 +22,7 @@ static hal_uc::timer::timConfig timConf(
 		true
 		);
 
-static uint32_t timerValue = 0;
+static std::uint32_t timerValue = 0;
 
 static hal_uc::timer* refTim;
 static hal_uc::rng* refRng;
@@ -89,8 +89,5 @@ int main()
 extern "C" void TIM2_IRQHandler(void)
 {
 	TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
-
 	timerValue++;
-//	printRandom();
-//	printf("%u\n",t++);
 }

@@ -11,6 +11,7 @@
 extern std::uint32_t ramFunc(std::uint32_t numA, std::uint32_t numB);
 extern std::uint32_t ramFuncCCM(std::uint32_t numA, std::uint32_t numB);
 
+/* configure timer for about 1ms @APB1 Clock of 168Mhz / 4 (AHB Div) */
 static hal_uc::timer::timConfig timConf(
 		hal_uc::timer::Instance::TIMER2,
 		42-1,
@@ -21,7 +22,7 @@ static hal_uc::timer::timConfig timConf(
 		true
 		);
 
-uint32_t timerValue = 0;
+static uint32_t timerValue = 0;
 
 static hal_uc::timer* refTim;
 static hal_uc::rng* refRng;
@@ -82,4 +83,14 @@ int main()
 	};
 
 	return 0;
+}
+
+
+extern "C" void TIM2_IRQHandler(void)
+{
+	TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
+
+	timerValue++;
+//	printRandom();
+//	printf("%u\n",t++);
 }

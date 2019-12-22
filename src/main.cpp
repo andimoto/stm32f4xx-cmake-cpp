@@ -13,8 +13,18 @@ extern std::uint32_t ramFunc(std::uint32_t numA, std::uint32_t numB);
 extern std::uint32_t ramFuncCCM(std::uint32_t numA, std::uint32_t numB);
 
 /* configure timer for about 1ms @APB1 Clock of 168Mhz / 4 (AHB Div) */
-static hal_uc::timer::timConfig timConf(
+static hal_uc::timer::timConfig tim2Conf(
 		hal_uc::timer::Instance::TIMER2,
+		42-1,
+		hal_uc::timer::CounterMode::UP,
+		999,
+		hal_uc::timer::ClockDiv::DIV1,
+		0
+		);
+
+/* configure timer for about 1ms @APB1 Clock of 168Mhz / 4 (AHB Div) */
+static hal_uc::timer::timConfig tim14Conf(
+		hal_uc::timer::Instance::TIMER14,
 		42-1,
 		hal_uc::timer::CounterMode::UP,
 		999,
@@ -68,13 +78,15 @@ static void cnt(void)
 int main()
 {
 	hal_uc::rng rand1;
-	hal_uc::timer tim2(timConf, &cnt);
+	hal_uc::timer tim2(tim2Conf, &cnt);
+	hal_uc::timer tim14(tim14Conf);
 
 	refTim = &tim2;
 	refRng = &rand1;
 
 	rand1.start();
 	tim2.start();
+	tim14.start();
 
 	printf("Clock %u\n", SystemCoreClock);
 

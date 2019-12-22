@@ -142,13 +142,21 @@ std::uint32_t hal_uc::timer::get(void) const
 
 void hal_uc::timer::start(void)
 {
-	enableTimerIrq(timInstance); /* enable NVIC Irq */
+	/* enable irq only if an irq handler function has been provided */
+	if(timerIrqFunc != nullptr)
+	{
+		enableTimerIrq(timInstance); /* enable NVIC Irq */
+	}
 	startTimerCtrl(timInstance); /* start timer */
 }
 
 void hal_uc::timer::stop(void)
 {
-	disableTimerIrq(timInstance); /* disable NVIC Irq */
+	/* enable irq only if an irq handler function has been provided */
+	if(timerIrqFunc != nullptr)
+	{
+		disableTimerIrq(timInstance); /* disable NVIC Irq */
+	}
 	stopTimerCtrl(timInstance); /* stop timer */
 }
 
@@ -207,7 +215,7 @@ static void registerTimerObject(hal_uc::timer* timerObj, const hal_uc::timer::In
 
 extern "C" void TIM2_IRQHandler(void)
 {
-	TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
+	TIM_ClearITPendingBit(TIM2, TIM_IT_Update); // @suppress("Invalid arguments")
 	if(tim2ref != nullptr)
 	{
 		tim2ref->irqHandler();
@@ -243,7 +251,7 @@ extern "C" void TIM5_IRQHandler(void)
 
 extern "C" void TIM6_DAC_IRQHandler(void)
 {
-	TIM_ClearITPendingBit(TIM6, TIM_IT_Update);
+	TIM_ClearITPendingBit(TIM6, TIM_IT_Update); // @suppress("Invalid arguments")
 	if(tim6ref != nullptr)
 	{
 		tim6ref->irqHandler();

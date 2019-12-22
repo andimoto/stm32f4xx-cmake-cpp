@@ -215,7 +215,7 @@ static void registerTimerObject(hal_uc::timer* timerObj, const hal_uc::timer::In
 
 extern "C" void TIM2_IRQHandler(void)
 {
-	TIM_ClearITPendingBit(TIM2, TIM_IT_Update); // @suppress("Invalid arguments")
+	TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
 	if(tim2ref != nullptr)
 	{
 		tim2ref->irqHandler();

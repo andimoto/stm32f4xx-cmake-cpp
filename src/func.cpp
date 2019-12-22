@@ -1,3 +1,8 @@
+/**
+ * Name: func.cpp
+ * Initial Author: andimoto
+ */
+
 #include <cstdint>
 #include <cstddef>
 #include "itm_write.h"
@@ -6,6 +11,8 @@
 #include "stm32f4xx.h"
 #include "core_cm4.h"
 #include "types.hpp"
+
+extern void toggleLed(void);
 
 /* run from sram */
 __attribute__((section(".SRAM2F"))) std::uint32_t ramFunc(std::uint32_t numA, std::uint32_t numB)
@@ -44,6 +51,7 @@ static void cnt(void)
 	{
 		timerValue = 0;
 		printRandom();
+		toggleLed();
 	}
 }
 

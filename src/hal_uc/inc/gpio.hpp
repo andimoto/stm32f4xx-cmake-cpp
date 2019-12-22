@@ -23,7 +23,9 @@ public:
 		PORT_G,
 		PORT_H,
 		PORT_I,
-		PORT_K
+		PORT_J,
+		PORT_K,
+		PORT_ALL
 	};
 
 	enum class Pin
@@ -91,9 +93,15 @@ public:
 	};
 
 	gpio(const gpioConfig& gpioConfiguration);
+
+	void set(void);
+	void reset(void);
+	void toggle(void);
+
 private:
 	const Port gpioPort;
 	const Pin gpioPin;
+	const Mode gpioMode;
 };
 
 

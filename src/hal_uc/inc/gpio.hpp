@@ -8,7 +8,6 @@
 namespace hal_uc
 {
 
-
 class gpio
 {
 public:
@@ -97,6 +96,8 @@ public:
 	void set(void);
 	void reset(void);
 	void toggle(void);
+
+	std::uint8_t get(void) const;
 
 private:
 	const Port gpioPort;

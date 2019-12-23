@@ -92,3 +92,10 @@ void hal_uc::gpio::toggle(void)
 	}
 }
 
+std::uint8_t hal_uc::gpio::get(void) const
+{
+	return static_cast<std::uint8_t>(
+			GPIO_ReadInputDataBit(gpioBase[static_cast<std::uint8_t>(gpioPort)],
+			static_cast<std::uint16_t>(gpioPin)));
+}
+

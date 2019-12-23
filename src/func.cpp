@@ -13,6 +13,7 @@
 #include "types.hpp"
 
 extern void toggleLed(void);
+extern std::uint8_t getButton(void);
 
 /* run from sram */
 __attribute__((section(".SRAM2F"))) std::uint32_t ramFunc(std::uint32_t numA, std::uint32_t numB)
@@ -51,7 +52,8 @@ static void cnt(void)
 	{
 		timerValue = 0;
 		printRandom();
-		toggleLed();
+		if(getButton() == 0)
+			toggleLed();
 	}
 }
 
@@ -62,7 +64,7 @@ static hal_uc::timer::timConfig tim2Conf(
 		hal_uc::timer::Instance::TIMER2,
 		42-1,
 		hal_uc::timer::CounterMode::UP,
-		999,
+		1000,
 		hal_uc::timer::ClockDiv::DIV1,
 		0
 		);

@@ -12,6 +12,13 @@
 #include "core_cm4.h"
 #include "types.hpp"
 
+
+
+extern "C"
+{
+void printRandom(void);
+}
+
 extern void toggleLed(void);
 extern std::uint8_t getButton(void);
 
@@ -32,18 +39,6 @@ static hal_uc::timer* refTim;
 static hal_uc::rng* refRng;
 
 
-extern "C"
-{
-void printRandom(void)
-{
-	std::uint32_t randomNumberA = 0;
-
-	refRng->getNumber(randomNumberA);
-
-	printf("A %X  \n", randomNumberA);
-}
-}
-
 static void cnt(void)
 {
 	timerValue++;
@@ -56,7 +51,6 @@ static void cnt(void)
 			toggleLed();
 	}
 }
-
 
 
 /* configure timer for about 1ms @APB1 Clock of 168Mhz / 4 (AHB Div) */
@@ -87,4 +81,14 @@ void initFunc(void)
 }
 
 
+extern "C"
+{
+void printRandom(void)
+{
+	std::uint32_t randomNumberA = 0;
 
+	refRng->getNumber(randomNumberA);
+
+	printf("A %X  \n", randomNumberA);
+}
+}

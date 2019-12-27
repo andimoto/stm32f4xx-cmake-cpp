@@ -89,6 +89,6 @@ void printRandom(void)
 
 	refRng->getNumber(randomNumberA);
 
-	printf("A %X  \n", randomNumberA);
+//	printf("A 0x%08X  \n", randomNumberA);
 }
 }

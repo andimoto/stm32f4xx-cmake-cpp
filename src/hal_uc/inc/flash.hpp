@@ -22,6 +22,8 @@ public:
 
 	void getConfig(void);
 
+	std::uint32_t read(const std::uint32_t rdAddr);
+
 	flash(const memConfig& sector);
 private:
 	const std::uint32_t startAddress;

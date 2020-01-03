@@ -4,11 +4,14 @@
 #include "itm_write.h"
 #include "flash.hpp"
 #include "timer.hpp"
+#include "gpio.hpp"
 
 extern std::uint32_t ramFunc(std::uint32_t numA, std::uint32_t numB);
 extern std::uint32_t ramFuncCCM(std::uint32_t numA, std::uint32_t numB);
 extern void initFunc(void);
 extern void initGpio(void);
+extern std::uint8_t getButtonK0(void);
+extern std::uint8_t getButtonK1(void);
 
 hal_uc::flash::memConfig sectorConf1(
 		static_cast<std::uint32_t>(0x08000000),
@@ -50,8 +53,18 @@ int main()
 		if(counter >= 500)
 		{
 			counter = 0;
-			printf("@ 0x%08X: 0x%08X\n", readAddress, sector1.read(readAddress));
-			readAddress = readAddress + 4;
+
+			if(getButtonK0() == 0)
+			{
+				printf("@ 0x%08X: 0x%08X\n", readAddress, sector1.read(readAddress));
+				readAddress = readAddress + 4;
+			}
+
+			if(getButtonK1() == 0)
+			{
+				printf("Write to FLASH!\n");
+				sector1.checkAddress(0x080000FF);
+			}
 		}
 	};
 

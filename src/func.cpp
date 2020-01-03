@@ -20,7 +20,7 @@ void printRandom(void);
 }
 
 extern void toggleLed(void);
-extern std::uint8_t getButton(void);
+
 
 /* run from sram */
 __attribute__((section(".SRAM2F"))) std::uint32_t ramFunc(std::uint32_t numA, std::uint32_t numB)
@@ -47,8 +47,7 @@ static void cnt(void)
 	{
 		timerValue = 0;
 		printRandom();
-		if(getButton() == 0)
-			toggleLed();
+		toggleLed();
 	}
 }
 

@@ -1,6 +1,10 @@
 # STM32F4xx CMake Cpp Template 
 ...for Linux Toolchain (on Linux Mint 19.1)
 
+```
+Remarks: This Repository contains experimental source code for STM32F4 devices.
+```
+
 ## This Project contains following:
 ```
 - example source for stm32f4xx controllers

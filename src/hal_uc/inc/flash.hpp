@@ -23,23 +23,24 @@ public:
 	struct memConfig
 	{
 	public:
-		std::uint32_t startAddr;
-		std::uint32_t secSize;
+		const flashSector userSectorConfig;
 
-		memConfig(const std::uint32_t startAddrConf, const std::uint32_t secSizeConf);
 		memConfig(const hal_uc::flash::flashSector sectorNo);
 	};
 
-	void getConfig(void);
+	void printSectorConfig(void);
 
 	std::uint32_t read(const std::uint32_t rdAddr);
 
 	bool writeWord(const std::uint32_t wrAddr, const std::uint32_t wrData);
 
-	bool eraseSector(const flashSector sector);
-	bool checkAddress(const std::uint32_t checkAddress);
+	std::uint8_t eraseSector(void);
+
 	flash(const memConfig& sector);
 private:
+	bool checkAddress(const std::uint32_t checkAddress);
+
+	const flashSector userSector;
 	const std::uint32_t startAddress;
 	const std::uint32_t sectorSize;
 };

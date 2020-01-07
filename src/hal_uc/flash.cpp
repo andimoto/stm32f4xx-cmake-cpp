@@ -196,13 +196,28 @@ void hal_uc::flash::printSectorConfig(void)
 	printf("Size: %u Byte\n", sectorSize);
 }
 
-std::uint32_t hal_uc::flash::read(const std::uint32_t rdAddr)
+std::uint32_t hal_uc::flash::freeRead(const std::uint32_t rdAddr)
 {
 	std::uint32_t data = 0;
 
 	data = *(__IO std::uint32_t*)rdAddr;
 
 	return data;
+}
+
+bool hal_uc::flash::read(const std::uint32_t rdAddr, std::uint32_t& rdData)
+{
+	bool addrValid = true;
+
+	if(rdAddr >= startAddress &&
+			rdAddr < (startAddress + sectorSize))
+	{
+		rdData = *(__IO std::uint32_t*)rdAddr;
+	}else{
+		addrValid = false;
+	}
+
+	return addrValid;
 }
 
 bool hal_uc::flash::checkAddress(const std::uint32_t checkAddress)
@@ -266,9 +281,9 @@ bool hal_uc::flash::writeWord(const std::uint32_t wrAddr, const std::uint32_t wr
 	return opDone;
 }
 
-std::uint8_t hal_uc::flash::eraseSector(void)
+bool hal_uc::flash::eraseSector(void)
 {
-	std::uint8_t error = 0;
+	bool opDone = 0;
 	std::uint32_t eraseSector = 0;
 	FLASH_Status status = FLASH_COMPLETE;
 	/*
@@ -326,10 +341,13 @@ std::uint8_t hal_uc::flash::eraseSector(void)
 		FLASH->CR &= SECTOR_MASK;
 
 		flashLock();
+		opDone = true;
+	}else{
+		opDone = false;
 	}
 
 
-	return error;
+	return opDone;
 }
 
 

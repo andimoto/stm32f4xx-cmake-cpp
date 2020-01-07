@@ -36,7 +36,10 @@ static void countUp(void)
 
 int main()
 {
-	std::uint32_t readAddress = 0x08000000;
+	/* experimental firmware */
+
+	std::uint32_t readAddress = 0x08020000;
+	std::uint32_t freeReadAddress = 0x08000000;
 
 	std::uint8_t K0, previousK0 = 0;
 	std::uint8_t K1, previousK1 = 0;
@@ -63,8 +66,15 @@ int main()
 
 			if(K0 == 0 && previousK0 == 1)
 			{
-				printf("@ 0x%08X: 0x%08X\n", readAddress, sector1.read(readAddress));
-				readAddress = readAddress + 4;
+				std::uint32_t rdData = 0;
+				if(sector1.read(readAddress, rdData))
+				{
+					printf("@ 0x%08X: 0x%08X | @ 0x%08X: 0x%08X\n", readAddress, rdData, freeReadAddress, hal_uc::flash::freeRead(freeReadAddress));
+					readAddress = readAddress + 4;
+					freeReadAddress = freeReadAddress + 4;
+				}else{
+					printf("Invalid Address!\n");
+				}
 			}
 
 
@@ -96,8 +106,16 @@ int main()
 
 			if(KUP == 1 && previousKUP == 0)
 			{
+				bool done = false;
 				printf("Do erase sector!\n");
-				sector1.eraseSector();
+				done = sector1.eraseSector();
+				if(done == false)
+				{
+					printf("Failure! Could not erase sector!\n");
+				}else{
+					/* reset read address */
+					readAddress = 0x08020000;
+				}
 			}
 		}
 	};

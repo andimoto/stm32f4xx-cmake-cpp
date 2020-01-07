@@ -28,13 +28,15 @@ public:
 		memConfig(const hal_uc::flash::flashSector sectorNo);
 	};
 
+	static std::uint32_t freeRead(const std::uint32_t rdAddr);
+
 	void printSectorConfig(void);
 
-	std::uint32_t read(const std::uint32_t rdAddr);
+	bool read(const std::uint32_t rdAddr, std::uint32_t& rdData);
 
 	bool writeWord(const std::uint32_t wrAddr, const std::uint32_t wrData);
 
-	std::uint8_t eraseSector(void);
+	bool eraseSector(void);
 
 	flash(const memConfig& sector);
 private:

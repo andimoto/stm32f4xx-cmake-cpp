@@ -2,6 +2,9 @@
  * Name: gpio.hpp
  * Initial Author: andimoto
  */
+#ifndef HAL_UC_GPIO_H_
+#define HAL_UC_GPIO_H_
+
 #include <cstdint>
 
 
@@ -107,3 +110,4 @@ private:
 
 
 }
+#endif /* __HAL_UC_GPIO */

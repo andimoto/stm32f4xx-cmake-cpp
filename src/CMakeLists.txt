@@ -1,10 +1,12 @@
 # add the sources here
 set(HAL_UC_DIR hal_uc)
+set(HAL_PCB_DIR hal_pcb)
 
 set(sources
     main.cpp
     func.cpp
     leds.cpp
+    keyPad.cpp
 )
 
 set(sources ${sources}
@@ -14,8 +16,13 @@ set(sources ${sources}
     ${HAL_UC_DIR}/flash.cpp
 )
 
+set(sources ${sources}
+    ${HAL_PCB_DIR}/keyPad4x4.cpp
+)
+
 target_include_directories(stm32f4xx PUBLIC inc)
 target_include_directories(stm32f4xx PUBLIC ${HAL_UC_DIR}/inc)
+target_include_directories(stm32f4xx PUBLIC ${HAL_PCB_DIR}/inc)
 
 
 # GCC optimization level: use -O0 in debug build, otherwise -O2

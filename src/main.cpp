@@ -5,6 +5,7 @@
 #include "flash.hpp"
 #include "timer.hpp"
 #include "gpio.hpp"
+#include "keyPad.hpp"
 
 extern std::uint32_t ramFunc(std::uint32_t numA, std::uint32_t numB);
 extern std::uint32_t ramFuncCCM(std::uint32_t numA, std::uint32_t numB);
@@ -117,6 +118,8 @@ int main()
 					readAddress = 0x08020000;
 				}
 			}
+
+			progressKeyPad4x4();
 		}
 	};
 

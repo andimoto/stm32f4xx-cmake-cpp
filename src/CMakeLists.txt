@@ -18,6 +18,7 @@ set(sources ${sources}
 
 set(sources ${sources}
     ${HAL_PCB_DIR}/keyPad4x4.cpp
+    ${HAL_PCB_DIR}/led8Array.cpp
 )
 
 target_include_directories(stm32f4xx PUBLIC inc)

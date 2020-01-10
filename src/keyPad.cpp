@@ -42,41 +42,55 @@ const hal_uc::gpio::gpioConfig col4_conf(hal_uc::gpio::Port::PORT_D, hal_uc::gpi
 		hal_uc::gpio::PushPull::DOWN);
 
 /* ---------------- LEDARRAY OUTPUTS ---------------- */
-const hal_uc::gpio::gpioConfig d1_conf(hal_uc::gpio::Port::PORT_B, hal_uc::gpio::Pin::PIN_14,
+const hal_uc::gpio::gpioConfig d1_conf(hal_uc::gpio::Port::PORT_D, hal_uc::gpio::Pin::PIN_0,
 		hal_uc::gpio::Mode::OUT, hal_uc::gpio::Speed::FAST,	hal_uc::gpio::Type::PUSHPULL,
 		hal_uc::gpio::PushPull::NONE);
 
-const hal_uc::gpio::gpioConfig d2_conf(hal_uc::gpio::Port::PORT_B, hal_uc::gpio::Pin::PIN_13,
+const hal_uc::gpio::gpioConfig d2_conf(hal_uc::gpio::Port::PORT_D, hal_uc::gpio::Pin::PIN_1,
 		hal_uc::gpio::Mode::OUT, hal_uc::gpio::Speed::FAST,	hal_uc::gpio::Type::PUSHPULL,
 		hal_uc::gpio::PushPull::NONE);
 
-const hal_uc::gpio::gpioConfig d3_conf(hal_uc::gpio::Port::PORT_B, hal_uc::gpio::Pin::PIN_12,
+const hal_uc::gpio::gpioConfig d3_conf(hal_uc::gpio::Port::PORT_D, hal_uc::gpio::Pin::PIN_2,
 		hal_uc::gpio::Mode::OUT, hal_uc::gpio::Speed::FAST,	hal_uc::gpio::Type::PUSHPULL,
 		hal_uc::gpio::PushPull::NONE);
 
-const hal_uc::gpio::gpioConfig d4_conf(hal_uc::gpio::Port::PORT_B, hal_uc::gpio::Pin::PIN_11,
+const hal_uc::gpio::gpioConfig d4_conf(hal_uc::gpio::Port::PORT_D, hal_uc::gpio::Pin::PIN_3,
 		hal_uc::gpio::Mode::OUT, hal_uc::gpio::Speed::FAST,	hal_uc::gpio::Type::PUSHPULL,
 		hal_uc::gpio::PushPull::NONE);
 
-const hal_uc::gpio::gpioConfig d5_conf(hal_uc::gpio::Port::PORT_B, hal_uc::gpio::Pin::PIN_10,
+const hal_uc::gpio::gpioConfig d5_conf(hal_uc::gpio::Port::PORT_D, hal_uc::gpio::Pin::PIN_4,
 		hal_uc::gpio::Mode::OUT, hal_uc::gpio::Speed::FAST,	hal_uc::gpio::Type::PUSHPULL,
 		hal_uc::gpio::PushPull::NONE);
 
-const hal_uc::gpio::gpioConfig d6_conf(hal_uc::gpio::Port::PORT_E, hal_uc::gpio::Pin::PIN_15,
+const hal_uc::gpio::gpioConfig d6_conf(hal_uc::gpio::Port::PORT_D, hal_uc::gpio::Pin::PIN_5,
 		hal_uc::gpio::Mode::OUT, hal_uc::gpio::Speed::FAST,	hal_uc::gpio::Type::PUSHPULL,
 		hal_uc::gpio::PushPull::NONE);
 
-const hal_uc::gpio::gpioConfig d7_conf(hal_uc::gpio::Port::PORT_E, hal_uc::gpio::Pin::PIN_14,
+const hal_uc::gpio::gpioConfig d7_conf(hal_uc::gpio::Port::PORT_D, hal_uc::gpio::Pin::PIN_6,
 		hal_uc::gpio::Mode::OUT, hal_uc::gpio::Speed::FAST,	hal_uc::gpio::Type::PUSHPULL,
 		hal_uc::gpio::PushPull::NONE);
 
-const hal_uc::gpio::gpioConfig d8_conf(hal_uc::gpio::Port::PORT_E, hal_uc::gpio::Pin::PIN_13,
+const hal_uc::gpio::gpioConfig d8_conf(hal_uc::gpio::Port::PORT_D, hal_uc::gpio::Pin::PIN_7,
 		hal_uc::gpio::Mode::OUT, hal_uc::gpio::Speed::FAST,	hal_uc::gpio::Type::PUSHPULL,
 		hal_uc::gpio::PushPull::NONE);
 
+
+void printArray4x4(std::uint8_t keyArray[4][4])
+{
+	printf("\n\n");
+	for(std::uint8_t iRow = 0; iRow < 4; iRow++)
+	{
+		for(std::uint8_t iCol = 0; iCol < 4; iCol++)
+		{
+			printf("%u ",keyArray[iCol][iRow]);
+		}
+		printf("\n");
+	}
+}
 
 void progressKeyPad4x4(void)
 {
+	bool printArray = false;
 	static std::uint8_t keyArray[4][4];
 
 	static hal_pcb::keyPad4x4 keyPad4x4(row1_conf, row2_conf, row3_conf, row4_conf,
@@ -90,15 +104,18 @@ void progressKeyPad4x4(void)
 	keyPad4x4.scanKeyPad(keyArray);
 
 
-	printf("\n\n\n");
 	for(iRow = 0; iRow < 4; iRow++)
 	{
 		for(iCol = 0; iCol < 4; iCol++)
 		{
-			printf("%u ",keyArray[iCol][iRow]);
+			if(keyArray[iCol][iRow] == 1)
+			{
+				printArray = true;
+			}
 		}
-		printf("\n");
 	}
+	if(printArray)
+		printArray4x4(keyArray);
 
 	if(keyArray[1][1])
 	{
@@ -111,6 +128,4 @@ void progressKeyPad4x4(void)
 	else{
 		ledArray.runMode();
 	}
-
-
 }

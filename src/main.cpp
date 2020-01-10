@@ -42,9 +42,12 @@ int main()
 	std::uint32_t readAddress = 0x08020000;
 	std::uint32_t freeReadAddress = 0x08000000;
 
-	std::uint8_t K0, previousK0 = 0;
-	std::uint8_t K1, previousK1 = 0;
-	std::uint8_t KUP, previousKUP = 0;
+	std::uint8_t K0 = 0;
+	std::uint8_t previousK0 = 0;
+	std::uint8_t K1 = 0;
+	std::uint8_t previousK1 = 0;
+	std::uint8_t KUP = 0;
+	std::uint8_t previousKUP = 0;
 
 	hal_uc::flash sector1(sectorConf1);
 	hal_uc::timer tim3(tim3Conf, &countUp);
@@ -57,7 +60,7 @@ int main()
 
 	for (;;)
 	{
-		if(counter >= 500)
+		if(counter > 500)
 		{
 			counter = 0;
 

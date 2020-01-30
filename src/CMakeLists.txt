@@ -4,6 +4,7 @@ set(HAL_PCB_DIR hal_pcb)
 
 set(sources
     main.cpp
+    lcd_oneInch.cpp
     func.cpp
     leds.cpp
     keyPad.cpp

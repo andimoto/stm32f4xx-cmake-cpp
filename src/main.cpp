@@ -7,6 +7,7 @@
 #include "gpio.hpp"
 #include "keyPad.hpp"
 
+extern void runLCD(void);
 
 /* configure timer for about 1ms @APB1 Clock of 168Mhz / 4 (AHB Div) */
 static hal_uc::timer::timConfig tim3Conf(
@@ -35,6 +36,7 @@ int main()
 		{
 			counter = 0;
 			printf("Hello!\n");
+			runLCD();
 		}
 	};
 

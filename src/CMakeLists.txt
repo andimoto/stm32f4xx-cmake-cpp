@@ -29,6 +29,7 @@ target_include_directories(stm32f4xx PUBLIC ${HAL_PCB_DIR}/inc)
 # GCC optimization level: use -O0 in debug build, otherwise -O2
 if(CMAKE_BUILD_TYPE MATCHES Debug)
   set(opt_level -O0)
+#  set(opt_level -O2) DOES NOT WORK!! WRONG JUMP AT FOR(;;) LOOP?!
 else()
   set(opt_level -Os)
 endif()
@@ -48,7 +49,7 @@ target_link_libraries(${elf_file} PUBLIC stm32f4xx)
 
 # set additional for compiler and linker: optimization and generate map file
 set(additional_compiler_flags ${opt_level})
-set(additional_linker_flags -Wl,-Map=${map_file},--cref,--no-warn-mismatch)
+set(additional_linker_flags -Wl,-Map=${map_file},--cref,--no-warn-mismatch,--print-memory-usage)
 target_compile_options(${elf_file} PRIVATE ${additional_compiler_flags})
 target_link_libraries(${elf_file} PRIVATE ${additional_linker_flags})
 
